@@ -9,6 +9,6 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v6
         env:
-          CYPRESS_RECORD_KEY: ${{ 09b2de12-9280-455f-b5d5-b0b1cee900ae }}
+          CYPRESS_RECORD_KEY: ${{'09b2de12-9280-455f-b5d5-b0b1cee900ae'}}
         with:
           command: npm run test:cloud
