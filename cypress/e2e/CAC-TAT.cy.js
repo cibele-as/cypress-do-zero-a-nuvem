@@ -6,7 +6,7 @@ describe('Central de Atendimento ao Cliente TAT', () => {
     cy.title().should('be.equal', 'Central de Atendimento ao Cliente TAT')
     });
 
-  it.only('preenche os campos obrigatorios e envia o formulário', () => {
+  it('preenche os campos obrigatorios e envia o formulário', () => {
     const longText = Cypress._.repeat('Eu tenho uma düvida sobre o atendimento e gostaria de verificar alguns itens importantes', 10)
     //Preenchendo os campo nome obrigatório
    cy.get('input[name="firstName"]').type('Ana').as('firstName')
@@ -111,7 +111,7 @@ describe('Central de Atendimento ao Cliente TAT', () => {
   })
 
 //Envia o formuário com sucesso usando um comando customizado
-  it.only('Envia o formulário com sucesso usando um comand customizado', () => {
+  it('Envia o formulário com sucesso usando um comand customizado', () => {
    // const data = {
      // firstName: 'Ana',
     //  lastName: 'Lopes',
