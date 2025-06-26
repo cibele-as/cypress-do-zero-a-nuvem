@@ -29,3 +29,4 @@ Or, run `npm run cy:open:mobile` to open the Cypress App a mobile viewport.
 If you want to support this project, leave a ⭐.
 
 This project was created with 💚 by Cibele
+
