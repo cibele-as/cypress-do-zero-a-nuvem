@@ -13,6 +13,7 @@ describe('Central de Atendimento ao Cliente TAT', () => {
     cy.get('@firstName')
       .should('have.value', 'Ana')
 
+   
     //Preenchendo os campo sobrenome obrigatório
     cy.get('input[name="lastName"]').type ('Lopes').as ('lastName')
     cy.get('@lastName')
@@ -28,6 +29,7 @@ describe('Central de Atendimento ao Cliente TAT', () => {
       cy.get('@openTextarea')
         .should('have.value', longText)
 
+    
     //Enviando o formulário
 
     cy.contains('button', 'Enviar').click()
@@ -106,8 +108,13 @@ describe('Central de Atendimento ao Cliente TAT', () => {
    // cy.get('button[type="submit"]').click()
     cy.contains('button', 'Enviar').click()
 
-
+    // Congela relogio do navegador
+    cy.clock ()
     cy.get('.error').should('be.visible')
+    
+    // descongelar o relogio do navegador
+    cy.tick(3000)
+    cy.get('.error').should('not.be.visible')
   })
 
 //Envia o formuário com sucesso usando um comando customizado
@@ -120,8 +127,14 @@ describe('Central de Atendimento ao Cliente TAT', () => {
    // }
 
     cy.fillMandatoryFieldsAndSubmit() 
-     
+
+    //Congela relogio do navegador
+     cy.clock()
      cy.get('.success').invoke('text')
+
+    // descongela relogio do navegador
+      cy.tick(3000)
+      cy.get('.success').should('not.be.visible')
 
   
   })
@@ -221,5 +234,60 @@ describe('Central de Atendimento ao Cliente TAT', () => {
       .should('be.visible')
 })
 
+
+// Exibe e oculta as mensagens de sucesso e erro usando .invoke
+  it('Exibe e oculta as mensagens de sucesso e erro usando .invoke', () => {
+    cy.get('.success')
+      .should('not.be.visible')
+      .invoke('show')
+      .should('be.visible')
+      .and('contain', 'Mensagem enviada com sucesso.')
+      .invoke('hide')
+      .should('not.be.visible')
+      cy.get('.error')
+      .should('not.be.visible')
+      .invoke('show')
+      .should('be.visible')
+      .and('contain', 'Valide os campos obrigatórios!')
+      .invoke('hide')
+      .should('not.be.visible')
+
+  })
+
+  // Preenche o campo da area de texto usando o comando invoke
+  it('Preenche o campo da area de texto usando o comando invoke', () => {
+    cy.get('#open-text-area')
+      .invoke('val', 'Mensagem de teste')
+      .should('have.value', 'Mensagem de teste')
+  })
   
+  // Fazer uma requisicao HTTP
+  describe ('GET - Requisicao HTTP', () => {
+    it('Faz uma requisicao HTTP', () => {
+      cy.request ('https://cac-tat-v3.s3.eu-central-1.amazonaws.com/index.html')
+        .as('getRequest')
+        .its('status')
+        .should('be.equal', 200)
+      cy.get('@getRequest')
+        .its('statusText')
+        .should('be.equal', 'OK')
+      cy.get('@getRequest')
+        .its('body')
+        .should('include', 'CAC TAT')
+       
+  })
+  })
+
+  // Encontra o gato escondigo
+  it('Encontra o gato escondido', () => {
+    cy.get('#cat')
+      .should('not.be.visible')
+      .invoke('show')
+      .should('be.visible')
+      .and('have.text', '🐈')
+    cy.get('#title')
+      .invoke('text', 'CAT TAT')
+    cy.get('#subtitle')
+      .invoke('text', 'I ❤️ cats')    
+      })
 })
